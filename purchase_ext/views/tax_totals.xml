@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="TaxTotalsField" inherit_id="account.TaxTotalsField">
+       <table class="float-end"  position="replace">
+            <table class="float-end">
+                
+            </table>
+       </table>
+    </template>
+</odoo>

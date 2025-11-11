@@ -17,6 +17,7 @@
     "data": [
         # views
         "views/purchase_order.xml",
+        # "views/tax_totals.xml",
     ],
     "application": True,
     "license": "LGPL-3",
