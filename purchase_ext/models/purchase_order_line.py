@@ -2,7 +2,7 @@ from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 
 
-class DMSPurchaseOrderLine(models.Model):
+class PurchaseOrderLine(models.Model):
     _inherit = 'purchase.order.line'
 
     gross_unit_price = fields.Float(string='Gross Unit Price', digits='Product Price')
