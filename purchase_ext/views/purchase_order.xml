@@ -3,35 +3,45 @@
     <record id="purchase_order_form_view" model="ir.ui.view">
         <field name="name">purchase.order.inherit.form.view</field>
         <field name="model">purchase.order</field>
-        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="inherit_id" ref="purchase.purchase_order_form" />
         <field
             name="arch" type="xml">
             <!-- add_field_in_the_list_view_for_each_product -->
-            <xpath expr="//page[@name='products']/field[@name='order_line']/list[1]/field[@name='price_unit']" position="before">
-                <field name="gross_unit_price" width="auto"/>
-                <field name="total_before_global_discount" width="auto"/>
-                <field name="global_discount_status" widget="boolean_toggle" width="auto"/>
-                <field name="global_discount_amount" width="auto"/>
-                <field name="net_amount" width="auto"/>
+            <xpath
+                expr="//page[@name='products']/field[@name='order_line']/list[1]/field[@name='price_unit']"
+                position="before">
+                <field name="gross_unit_price" width="auto" readonly="not global_discount_status" />
+                <field name="total_before_global_discount" width="auto" />
+                <field name="global_discount_status" widget="boolean_toggle" width="auto" />
+                <field name="global_discount_amount" width="auto"
+                    readonly="not global_discount_status" />
+                <field name="net_amount" width="auto" />
             </xpath>
-            <xpath expr="//page[@name='products']/field[@name='order_line']/list[1]/field[@name='price_unit']" position="attributes">
+            <xpath
+                expr="//page[@name='products']/field[@name='order_line']/list[1]/field[@name='price_unit']"
+                position="attributes">
                 <attribute name="readonly">1</attribute>
             </xpath>
 
 
             <!-- add_field_in_the_purchase_form -->
-            <xpath expr="//form[1]/sheet[1]/group[1]/group[2]/div[@name='date_planned_div']" position="after">
-                <field name="is_allocated_global_discount" invisible="1"/>
-                <label for="global_discount"/>
+            <xpath expr="//form[1]/sheet[1]/group[1]/group[2]/div[@name='date_planned_div']"
+                position="after">
+                <field name="is_allocated_global_discount" invisible="1" />
+                <label for="global_discount" />
                 <div name="global_discount_div" class="o_row">
-                    <field name="global_discount"/>
-                    <button name="allocate_global_discount" string="Allocate Global Discount" type="object" class="btn mb-1 btn-primary" invisible="is_allocated_global_discount"/>
+                    <field name="global_discount" />
+                    <button name="allocate_global_discount" string="Allocate Global Discount"
+                        type="object" class="btn mb-1 btn-primary"
+                        invisible="state in ['purchase','cancel']" />
                 </div>
             </xpath>
 
-            <xpath expr="//field[@name='partner_id']" position="after">
-                    <field name="total_before_global_discount"/>
-                    <field name="total_global_discount"/>
+            <xpath
+                expr="//form[1]/sheet[1]/notebook[1]/page[1]/group[1]/group[2]/field[@name='tax_totals']"
+                position="before">
+                <field name="total_before_global_discount" />
+                <field name="total_global_discount" />
             </xpath>
         </field>
     </record>

@@ -11,6 +11,8 @@ class PurchaseOrder(models.Model):
     is_allocated_global_discount = fields.Boolean("Is Allocated Global Discount")
 
     def allocate_global_discount(self):
+        if not self.total_global_discount:
+            self.allocate_global_discount_on_line()
         self.validate_global_discount()
 
     def validate_global_discount(self):
@@ -31,7 +33,13 @@ class PurchaseOrder(models.Model):
         self.validate_global_discount()
         super().button_confirm()
 
-    @api.onchange('global_discount')
+    @api.onchange('global_discount','total_global_discount')
     def _onchange_global_discount(self):
         if self.global_discount:
             self.is_allocated_global_discount = False
+
+    def allocate_global_discount_on_line(self):
+        lines_with_global_discount = self.order_line.filtered(lambda line: line.global_discount_status)
+        subtotal_lines_with_global_discount = sum(lines_with_global_discount.mapped("total_before_global_discount"))
+        for line in lines_with_global_discount:
+            line.global_discount_amount = self.global_discount * (line.total_before_global_discount / subtotal_lines_with_global_discount)

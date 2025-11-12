@@ -1,3 +1,4 @@
+from ast import Store
 from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 
@@ -10,7 +11,7 @@ class PurchaseOrderLine(models.Model):
     total_before_global_discount = fields.Monetary(
         string='Total Before Global Discount', digits='Product Price', help="The total amount before applying the global discount.", compute="_compute_total_before_global_discount", store=True)
     global_discount_status = fields.Boolean(string='Global Discount Status', default=False,
-                                            help="If checked, the global discount amount will be applied to this line.", readonly=False, compute='_compute_global_discount_status')
+                                            help="If checked, the global discount amount will be applied to this line.", readonly=False, compute='_compute_global_discount_status', store=True)
     global_discount_amount = fields.Monetary(
         string='Global Discount Amount', digits='Product Price', help="The global discount amount to be applied to this line.")
     net_amount = fields.Monetary(string='Net Amount', digits='Product Price',
@@ -33,10 +34,7 @@ class PurchaseOrderLine(models.Model):
     @api.depends('product_qty', 'gross_unit_price', 'global_discount_status')
     def _compute_total_before_global_discount(self):
         for line in self:
-            if line.global_discount_status:
-                line.total_before_global_discount = line.product_qty * line.gross_unit_price
-            else:
-                line.total_before_global_discount = 0.0
+            line.total_before_global_discount = line.product_qty * line.gross_unit_price
 
 
     @api.depends('total_before_global_discount', 'global_discount_amount')

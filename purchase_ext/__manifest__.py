@@ -11,14 +11,19 @@
     # any module necessary for this one to work correctly
     "depends": [
         "base",
+        "account",
         "purchase",
     ],
     # always loaded
     "data": [
         # views
         "views/purchase_order.xml",
-        # "views/tax_totals.xml",
     ],
     "application": True,
     "license": "LGPL-3",
+    # 'assets': {
+    #     'web.assets_backend': [
+    #         'purchase_ext/static/src/components/**/*',
+    #     ],
+    # }
 }
